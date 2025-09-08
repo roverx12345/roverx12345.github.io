@@ -1,0 +1,3 @@
+[submodule "jointavbench_webpage"]
+	path = jointavbench_webpage
+	url = https://github.com/roverx12345/jointavbench_webpage.git
