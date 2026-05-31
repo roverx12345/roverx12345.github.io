@@ -50,7 +50,7 @@ description: Personal homepage of Jianghan Chao.
   <div>
     <p class="eyebrow" data-i18n-zh="近期" data-i18n-en="Now">近期</p>
     <h2 data-i18n-zh="近期关注" data-i18n-en="Current Focus">近期关注</h2>
-    <p data-i18n-zh="这里会持续更新正在做的项目、开放合作方向、近期论文，以及我希望访问者第一眼看到的信息。" data-i18n-en="This section will keep track of ongoing projects, collaboration interests, recent papers, and the information I want visitors to notice first.">这里会持续更新正在做的项目、开放合作方向、近期论文，以及我希望访问者第一眼看到的信息。</p>
+    <p data-i18n-zh="我目前主要关注多模态和视频理解，尤其是跨模态感知、推理与视频内容理解。" data-i18n-en="My current focus is multimodality and video understanding, especially cross-modal perception, reasoning, and understanding video content.">我目前主要关注多模态和视频理解，尤其是跨模态感知、推理与视频内容理解。</p>
   </div>
 </section>
 
