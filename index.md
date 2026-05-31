@@ -8,7 +8,7 @@ description: Personal homepage of Jianghan Chao.
   <div class="hero-copy">
     <p class="eyebrow" data-i18n-zh="个人主页" data-i18n-en="Personal Homepage">个人主页</p>
     <h1 data-i18n-zh="{{ site.author.name }}" data-i18n-en="{{ site.author.english_name }}">{{ site.author.name }}</h1>
-    <p class="subtitle" data-i18n-zh="{{ site.author.affiliation }}的 {{ site.author.title }}。" data-i18n-en="{{ site.author.title_en }} at {{ site.author.affiliation_en }}.">{{ site.author.affiliation }}的 {{ site.author.title }}。</p>
+    <p class="subtitle" data-i18n-zh="{{ site.author.affiliation }}的 {{ site.author.title }}。" data-i18n-en="{{ site.author.title_en }} at {{ site.author.affiliation_en }}, starting from 2025.">{{ site.author.affiliation }}的 {{ site.author.title }}。</p>
     <div class="hero-actions">
       <a class="button primary" href="{{ '/publications/' | relative_url }}" data-i18n-zh="查看论文" data-i18n-en="View Publications">查看论文</a>
       <a class="button secondary" href="{{ '/blog/' | relative_url }}" data-i18n-zh="阅读博客" data-i18n-en="Read Blog">阅读博客</a>
@@ -45,7 +45,7 @@ description: Personal homepage of Jianghan Chao.
   <div>
     <p class="eyebrow" data-i18n-zh="关于" data-i18n-en="About">关于</p>
     <h2 data-i18n-zh="简介" data-i18n-en="About Me">简介</h2>
-    <p data-i18n-zh="我是晁姜晗，目前是中国人民大学高瓴人工智能学院和北京中关村学院的 2025 级联培博士生，关注人工智能研究、工程实践，以及持续学习中的问题与方法。" data-i18n-en="I am Jianghan Chao, a 2025 joint PhD student at Gaoling School of Artificial Intelligence, Renmin University of China, and Beijing Zhongguancun Academy. My interests span AI research, engineering practice, and the methods behind continuous learning.">我是晁姜晗，目前是中国人民大学高瓴人工智能学院和北京中关村学院的 2025 级联培博士生，关注人工智能研究、工程实践，以及持续学习中的问题与方法。</p>
+    <p data-i18n-zh="我是晁姜晗，目前是中国人民大学高瓴人工智能学院和北京中关村学院的 2025 级联培博士生，关注人工智能研究、工程实践，以及持续学习中的问题与方法。" data-i18n-en="I am Jianghan Chao, a joint PhD student at Gaoling School of Artificial Intelligence, Renmin University of China, and Beijing Zhongguancun Academy, starting from 2025. My interests span AI research, engineering practice, and the methods behind continuous learning.">我是晁姜晗，目前是中国人民大学高瓴人工智能学院和北京中关村学院的 2025 级联培博士生，关注人工智能研究、工程实践，以及持续学习中的问题与方法。</p>
   </div>
   <div>
     <p class="eyebrow" data-i18n-zh="近期" data-i18n-en="Now">近期</p>
