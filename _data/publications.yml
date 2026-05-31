@@ -1,9 +1,11 @@
-- title: "Example Paper Title"
-  authors: "Rover X, Collaborator A, Collaborator B"
-  venue: "Conference or Journal Name"
+- title: "JointAVBench: A Benchmark for Joint Audio-Visual Reasoning Evaluation"
+  authors: "Jianghan Chao, Jianzhang Gao, Wenhui Tan, Yuchong Sun, Ruihua Song, Liyun Ru"
+  venue: "ICLR"
   year: 2026
   links:
-    paper: "https://example.com/paper"
-    code: "https://github.com/roverx12345/example"
+    paper: "https://arxiv.org/pdf/2512.12772"
+    project: "https://roverx12345.github.io/jointavbench_webpage/"
+    code: "https://github.com/roverx12345/JointAVBench"
+    data: "https://huggingface.co/datasets/JointAVBench/JointAVBench"
   selected: true
-  summary: "One sentence summary of the contribution. Replace this entry with your real publication."
+  summary: "A benchmark for evaluating omni-modal large language models on joint audio-visual reasoning, with 2,853 questions across 15 task types."
