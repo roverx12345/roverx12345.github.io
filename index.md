@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Home
-description: Personal homepage of Jianghan (Brian) Chao.
+description: Personal homepage of Jianghan Chao.
 ---
 
 <section class="hero">
@@ -41,7 +41,7 @@ description: Personal homepage of Jianghan (Brian) Chao.
   <div>
     <p class="eyebrow" data-i18n-zh="关于" data-i18n-en="About">关于</p>
     <h2 data-i18n-zh="简介" data-i18n-en="About Me">简介</h2>
-    <p data-i18n-zh="我是晁姜晗，目前是中国人民大学高瓴人工智能学院和北京中关村学院的 2025 级联培博士生，关注人工智能研究、工程实践，以及持续学习中的问题与方法。" data-i18n-en="I am Jianghan (Brian) Chao, a joint PhD student at Gaoling School of Artificial Intelligence, Renmin University of China, and Beijing Zhongguancun Academy, starting from 2025. My interests span AI research, engineering practice, and the methods behind continuous learning.">我是晁姜晗，目前是中国人民大学高瓴人工智能学院和北京中关村学院的 2025 级联培博士生，关注人工智能研究、工程实践，以及持续学习中的问题与方法。</p>
+    <p data-i18n-zh="我是晁姜晗，目前是中国人民大学高瓴人工智能学院和北京中关村学院的 2025 级联培博士生，关注人工智能研究、工程实践，以及持续学习中的问题与方法。" data-i18n-en="I am Jianghan Chao, a joint PhD student at Gaoling School of Artificial Intelligence, Renmin University of China, and Beijing Zhongguancun Academy, starting from 2025. My interests span AI research, engineering practice, and the methods behind continuous learning.">我是晁姜晗，目前是中国人民大学高瓴人工智能学院和北京中关村学院的 2025 级联培博士生，关注人工智能研究、工程实践，以及持续学习中的问题与方法。</p>
   </div>
   <div>
     <p class="eyebrow" data-i18n-zh="近期" data-i18n-en="Now">近期</p>
