@@ -1,32 +1,36 @@
 ---
-title: "CoT-SFT 的收益、衰减与三条研究路径"
-description: "整理 CoT-SFT 在显式推理、长输出成本、证据忠实性与 latent reasoning 之间的权衡。"
+title: "CoT-SFT Tradeoffs, Efficient CoT, RL, and Implicit Reasoning"
+description: "A research note on why explicit CoT fine-tuning can help or hurt, and how that motivates efficient CoT, optimized CoT training, and implicit reasoning."
 date: 2026-05-31 12:00:00 +0800
 ---
 
-这篇笔记整理了最近关于 CoT-SFT、efficient CoT、用 RL 更好利用 CoT 数据，以及 implicit / latent reasoning 的一些判断。核心问题很朴素：显式 CoT 为什么有时有效，有时又会输给 answer-only？如果把它放在 Omni Video Reasoning 的语境下，这个问题还会变得更尖锐，因为瓶颈未必总是文本推理，很多时候是视频、音频证据本身是否被可靠提取。
+This note organizes a few current thoughts on CoT-SFT, efficient CoT, RL over CoT data, and implicit or latent reasoning. The core question is simple: why can explicit CoT fine-tuning sometimes help, but sometimes underperform answer-only behavior? In Omni Video Reasoning, this question becomes sharper because the bottleneck is not always text-only reasoning. It is often whether the model can reliably acquire and verbalize the relevant visual and audio evidence.
 
-## 一句话结论
+## Short Answer
 
-显式 CoT 有收益，也有衰减。收益来自格式、终止模式、推理模板和自检行为；衰减来自长输出成本、答案监督被 rationale token 稀释、teacher-forcing mismatch、长链错误累积，以及不可靠 evidence 被自然语言 rationale 展开或合理化。
+The proposed decomposition is basically right: CoT-SFT can provide format, termination, and reasoning-pattern benefits, but it can also introduce long-output costs, answer-token dilution, train/test mismatch, and error accumulation.
 
 ```text
-CoT-SFT 效果
-= 格式 / 终止 / 推理模式收益
-- 长输出成本
-- final answer token 被 rationale token 稀释
+Observed CoT-SFT effect
+= format / termination / reasoning-pattern benefit
+- long-output cost
+- answer-token dilution under long rationale loss
 - teacher-forcing mismatch
-- 长链错误累积
-- 不可靠 evidence 被长 rationale 展开或合理化
+- error accumulation across long traces
+- unfaithful or hallucinated evidence amplification
 ```
 
-因此，我更倾向于把后续研究拆成三条线：缩短显式 CoT、更好地优化显式 CoT，以及跳出自然语言 CoT 做 implicit / latent reasoning。
+A stricter formulation is useful: the positive side is not merely "format matching", and the negative side is not merely "longer output". CoT traces may teach useful reasoning patterns, but they may also make the model imitate unsupported or overlong rationales.
 
-## 三条路径
+This naturally leads to three research directions: shorten explicit CoT, optimize how CoT data is used, or leave explicit natural-language CoT and move toward implicit reasoning.
 
-### 方向 A：Efficient Explicit CoT
+## Three Paths
 
-第一条路径的目标是降低显式 CoT 的负项：更短、更受控、更少冗余，同时尽量保留 evidence 和 reasoning signal。可尝试的做法包括：
+### Path A: Efficient Explicit CoT
+
+The first path tries to reduce the degradation term while preserving the useful parts of explicit reasoning. The goal is not to remove reasoning supervision, but to make it shorter, more controlled, and less redundant.
+
+Candidate variants include:
 
 - answer-first CoT
 - short rationale / one-sentence rationale
@@ -35,24 +39,28 @@ CoT-SFT 效果
 - rationale compression
 - masked rationale loss / answer reweighting
 
-这条线最适合作为当前 Daily-Omni ablation 的直接延伸，因为它不改变任务形态，只是在控制输出长度和监督分配。
+This path is the closest fit to the current Daily-Omni ablations, because it directly probes whether the main issue is length, supervision dilution, or train/test mismatch.
 
-### 方向 B：Optimized Explicit CoT
+### Path B: Optimized Explicit CoT
 
-第二条路径不是机械模仿所有 teacher rationale，而是筛选、偏好或强化真正有用的 reasoning trace。可尝试的做法包括：
+The second path tries to increase the benefit of CoT data. Instead of mechanically imitating every teacher rationale, the model should learn from the traces that are actually useful.
+
+Possible tools include:
 
 - CoT filtering / rewriting
-- DPO / ORPO preference
+- DPO / ORPO preference learning
 - GRPO / RL with answer reward
 - format reward
 - length penalty
 - evidence faithfulness reward
 
-这条线的风险在于：如果 reward 只看最终答案，模型可能学 shortcut；如果 reward 过度偏好详细推理，输出可能越训越长。所以它需要同时约束答案正确性、格式合法性、长度和 evidence faithfulness。
+The risk is that RL does not automatically solve the length problem. If the reward only checks the final answer, it may encourage shortcuts. If the reward overvalues detailed reasoning, it may make outputs even longer. A useful reward needs to jointly constrain answer correctness, format validity, length, and evidence faithfulness.
 
-### 方向 C：Implicit / Latent Reasoning
+### Path C: Implicit / Latent Reasoning
 
-第三条路径不再追求输出更好的自然语言 CoT，而是把中间推理压到 latent、soft token、abstract token 或 claim selector 里。可关注的方向包括：
+The third path no longer asks the model to output a better natural-language CoT. Instead, it replaces explicit CoT with latent, soft, abstract, or claim-level intermediate representations.
+
+Relevant variants include:
 
 - pause / latent tokens
 - continuous thought
@@ -61,51 +69,51 @@ CoT-SFT 效果
 - claim-level verifier
 - latent evidence slots
 
-我不太想把这条线写成 CoT 优化的自然延伸。它更像是替换自然语言中间表示的另一条路线：不再问「怎样写出更好的思考过程」，而是问「哪些中间状态真的需要被写成自然语言」。
+I would not frame this as a natural continuation of CoT optimization. It is a separate branch: instead of asking how to write better intermediate thoughts, it asks which intermediate states need to be written in natural language at all.
 
-## 这些判断依赖什么前提
+## Preconditions
 
-| 类别 | 前提 | 如果不成立，会发生什么 |
+| Category | Precondition | If it fails |
 | --- | --- | --- |
-| 模型能力 | 模型必须能稳定长输出，不能频繁早停、重复、格式崩坏或特殊 token loop。 | CoT-SFT 首先是在修输出稳定性，谈不上真正利用 CoT。 |
-| 模型能力 | 模型已有基本 instruction following 和 final-answer 格式能力。 | 格式收益、解析收益和推理收益会混在一起。 |
-| 多模态 evidence | 模型能比较可靠地从视频/音频中提取关键证据。 | 如果 evidence 错了，CoT 可能只是把错误讲得更长、更自洽。 |
-| 数据 | teacher CoT 必须 grounded、option-discriminative，且长度中确实存在可压缩冗余。 | 短 CoT 或压缩 CoT 可能丢掉关键信息；RL 也可能强化坏 rationale。 |
-| 训练目标 | final answer token 不能被长 rationale token 的 loss 稀释。 | 模型学会了风格和长解释，但最终答案决策变差。 |
-| 训练/推理一致性 | 训练时答案不能依赖 gold rationale，而推理时却要求模型自己生成 rationale。 | 会产生 teacher-forcing mismatch。 |
-| RL | reward 必须同时约束答案、格式、长度和 evidence faithfulness。 | 只看最终答案可能奖励 shortcut；只奖励详细推理可能把输出越拉越长。 |
+| Model capability | The model must be able to generate long outputs stably, without early stopping, loops, format collapse, or special-token failures. | CoT-SFT is mostly training output stability, not reasoning. |
+| Model capability | The model must already have basic instruction following and final-answer formatting ability. | Format gains, parsing gains, and reasoning gains become hard to separate. |
+| Multimodal evidence | The model must extract relevant visual/audio evidence with reasonable reliability. | If the evidence is wrong, CoT may only make the wrong observation longer and more coherent. |
+| Data | Teacher CoT must be grounded, option-discriminative, and contain compressible redundancy. | Compression may remove useful information, and RL may reinforce bad rationales. |
+| Training objective | The final answer token must not be drowned out by a long rationale loss. | The model may learn style and explanation patterns while getting worse at final answer selection. |
+| Train/test alignment | Training should not condition the answer on a gold rationale when inference requires the model to generate its own rationale. | This creates a teacher-forcing mismatch. |
+| RL | Rewards should jointly constrain answer correctness, format validity, length, and evidence faithfulness. | Final-answer-only rewards can encourage shortcuts; detail-seeking rewards can make outputs even longer. |
 
-## 文献线索
+## Literature Evidence
 
-### 长 CoT 可能导致退化
+### 1. Long CoT can degrade smaller or weaker models
 
-[Through the Valley: Path to Effective Long CoT Training for Small Language Models](https://arxiv.org/abs/2506.07712) 提出 Long CoT Degradation：小模型在有限 long-CoT 数据上可能明显退化，原因之一是长响应中的错误累积。
+[Through the Valley: Path to Effective Long CoT Training for Small Language Models](https://arxiv.org/abs/2506.07712) reports Long CoT Degradation and attributes part of the problem to error accumulation in longer responses.
 
-### Efficient / Short CoT 是一条有文献支撑的路径
+### 2. Efficient or short CoT is a supported path
 
-[CoT-Valve: Length-Compressible Chain-of-Thought Tuning](https://arxiv.org/abs/2502.09601) 探索对 reasoning chain 长度的可控压缩，目标是在显著缩短 token 的同时尽量保持性能。
+[CoT-Valve: Length-Compressible Chain-of-Thought Tuning](https://arxiv.org/abs/2502.09601) studies controllable compression of reasoning-chain length while preserving performance.
 
-[Long-Short Chain-of-Thought Mixture SFT](https://arxiv.org/abs/2505.03469) 使用 long + short CoT 混合训练，目标是减少 teacher 过度思考带来的冗长输出。
+[Long-Short Chain-of-Thought Mixture Supervised Fine-Tuning](https://arxiv.org/abs/2505.03469) mixes long CoT with structure-preserving short rewrites to reduce overthinking and response length.
 
-### Preference / RL 可以更好利用 CoT，但会引入长度风险
+### 3. Preference / RL can better exploit CoT, but may increase length
 
-[Thinking Preference Optimization](https://arxiv.org/abs/2502.13173) 通过偏好优化继续提升 long-CoT SFT 后的推理能力，但它偏好 long CoT，也报告了输出长度增加。这说明 RL / preference 可以提高收益项，但不天然解决长度负项。
+[Thinking Preference Optimization](https://arxiv.org/abs/2502.13173) improves reasoning after long-CoT SFT through preference optimization, but it prefers long CoT over short CoT and reports longer outputs. This supports RL or preference learning as a way to increase the benefit term, but not as an automatic solution to the length problem.
 
-### CoT 可能不忠实，甚至合理化错误
+### 4. CoT can be unfaithful or rationalizing
 
-[Language Models Don't Always Say What They Think](https://arxiv.org/abs/2305.04388) 说明 CoT explanation 可能系统性误代表真实决策原因，并会在偏置输入下合理化错误答案。
+[Language Models Don't Always Say What They Think](https://arxiv.org/abs/2305.04388) shows that CoT explanations can systematically misrepresent the true cause of a model's answer.
 
-[Chain-of-Thought Reasoning In The Wild Is Not Always Faithful](https://arxiv.org/abs/2503.08679) 在更真实的 prompting 条件下讨论 CoT faithfulness 问题。
+[Chain-of-Thought Reasoning In The Wild Is Not Always Faithful](https://arxiv.org/abs/2503.08679) studies faithfulness risks under more realistic prompting conditions.
 
-### 多模态 CoT 的 evidence faithfulness 风险
+### 5. Multimodal CoT has evidence-faithfulness risks
 
-[SPD-Faith Bench](https://arxiv.org/abs/2602.07833) 提出 perceptual blindness 和 perception-reasoning dissociation，并把问题关联到 visual attention decay 和 representation shift。
+[SPD-Faith Bench](https://arxiv.org/abs/2602.07833) identifies perceptual blindness and perception-reasoning dissociation in multimodal CoT.
 
-[Thinking Before Looking](https://huggingface.co/papers/2411.12591) 讨论 multimodal LLM reasoning 中视觉 hallucination 的缓解问题。
+[Thinking Before Looking](https://huggingface.co/papers/2411.12591) studies visual hallucination mitigation in multimodal LLM reasoning.
 
-[Understanding and Mitigating Hallucinations in Multimodal Chain-of-Thought Models](https://arxiv.org/abs/2603.27201) 关注 MCoT 中 hallucination 与视觉注意力衰减等问题。
+[Understanding and Mitigating Hallucinations in Multimodal Chain-of-Thought Models](https://arxiv.org/abs/2603.27201) discusses hallucinations during multimodal CoT reasoning and visual-attention decay.
 
-### Implicit / Latent Reasoning 是独立分支
+### 6. Implicit / latent reasoning is a separate branch
 
 - [Coconut: Training LLMs to Reason in a Continuous Latent Space](https://arxiv.org/abs/2412.06769)
 - [SoftCoT: Soft Chain-of-Thought for Efficient Reasoning with LLMs](https://arxiv.org/abs/2502.12134)
@@ -113,22 +121,22 @@ CoT-SFT 效果
 - [Thinking Without Words: Efficient Latent Reasoning with Abstract Chain-of-Thought](https://arxiv.org/abs/2604.22709)
 - [Do Latent-CoT Models Think Step-by-Step?](https://arxiv.org/abs/2602.00449)
 
-最后一篇也提醒我们：latent-CoT 并不天然等于真正的 step-by-step reasoning，它也可能学到 partial 或 shortcut 策略。
+The last paper is a useful caution: latent-CoT does not automatically mean genuine step-by-step reasoning. It can also learn partial or shortcut strategies, so it needs its own diagnostics.
 
-## 关于「不可靠 evidence 被 CoT 放大」
+## How to State the Evidence-Amplification Claim
 
-这个判断不应该写成「CoT 必然放大错误 evidence」。更稳妥的表述是：
+Avoid saying that CoT always amplifies wrong evidence. A more defensible claim is:
 
-> 已有 CoT faithfulness 和 multimodal CoT hallucination 研究表明，生成的 reasoning trace 不一定忠实于真实证据；当底层视觉/音频 evidence 不完整或错误时，较长的自然语言 rationale 可能把这个错误展开成自洽但不受支持的推理链，从而产生错误累积。
+> Prior work on CoT faithfulness and multimodal CoT hallucination shows that generated reasoning traces are not always faithful to the underlying evidence. When visual or audio evidence is incomplete or wrong, a longer natural-language rationale can elaborate that error into a coherent but unsupported chain, causing error accumulation.
 
-对 Video-Holmes 和 Daily-Omni 这类任务来说，这一点尤其重要。主瓶颈并不总是文本推理，而经常是 AV evidence acquisition / verbalization。长 CoT 在这种情况下可能不是「多想一步」，而是「把不可靠 evidence 多写几步」。
+This matters for the current project because the local experiments suggest that the key bottleneck is often AV evidence acquisition and verbalization, not downstream text-only reasoning. In that regime, longer CoT may not mean "thinking more"; it may mean "writing more about unreliable evidence".
 
-## 对当前项目的建议
+## Recommended Framing for This Project
 
-我会把优先级排成这样：
+I would rank the next steps like this:
 
-1. 先做 Efficient CoT。这最贴近当前 Daily-Omni ablation，尤其是 answer-prefix masked CoT、short rationale、evidence bullets 和 answer-token reweighting。
-2. RL / preference 只做小规模 pilot。reward 必须同时覆盖答案正确、格式合法、长度受控和 evidence faithful，否则很容易把输出越训越长。
-3. Implicit / latent reasoning 单独成线。不要把它写成 CoT 优化的自然延伸，它是替换自然语言中间表示的另一条路线。
+1. Prioritize Efficient CoT first. It directly tests the length/loss/mismatch hypothesis and matches the Daily-Omni ablations.
+2. Treat RL / preference as a small controlled pilot. The reward must include answer correctness, format validity, length control, and evidence faithfulness.
+3. Keep implicit / latent reasoning as a separate branch. It is not simply a better CoT; it replaces the natural-language intermediate representation.
 
-更大的 takeaway 是：CoT-SFT 不是一个单调收益项。它同时改变了监督密度、输出长度、训练/推理一致性和证据表达方式。对于多模态推理任务，真正需要问的不是「要不要 CoT」，而是「哪些证据需要显式写出，哪些推理应该被压缩，哪些监督应该留给最终答案」。
+The bigger takeaway is that CoT-SFT is not a monotonic benefit. It simultaneously changes supervision density, output length, train/test consistency, and evidence expression. For multimodal reasoning, the right question is not simply whether to use CoT. It is which evidence should be explicit, which reasoning should be compressed, and which supervision should stay focused on the final answer.
