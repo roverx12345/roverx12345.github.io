@@ -1,24 +1,32 @@
 ---
 layout: default
 title: Home
-description: Personal homepage of Rover X.
+description: Personal homepage of Jianghan Chao, also known as Brian Chao and RoverX.
 ---
 
 <section class="hero">
   <div class="hero-copy">
-    <p class="eyebrow">Personal Homepage</p>
-    <h1>{{ site.author.name }}</h1>
-    <p class="subtitle">{{ site.author.title }} at {{ site.author.affiliation }}. I write about research, engineering, and things I am learning.</p>
+    <p class="eyebrow" data-i18n-zh="个人主页" data-i18n-en="Personal Homepage">个人主页</p>
+    <h1 data-i18n-zh="{{ site.author.name }} · {{ site.author.english_name }}" data-i18n-en="{{ site.author.english_name }} · {{ site.author.name }}">{{ site.author.name }} · {{ site.author.english_name }}</h1>
+    <p class="subtitle" data-i18n-zh="{{ site.author.affiliation }}的 {{ site.author.title }}。也使用英文名 {{ site.author.alternate_name }} 和昵称 {{ site.author.nickname }}。" data-i18n-en="{{ site.author.title_en }} at {{ site.author.affiliation_en }}. Also known as {{ site.author.alternate_name }} and {{ site.author.nickname }}.">{{ site.author.affiliation }}的 {{ site.author.title }}。也使用英文名 {{ site.author.alternate_name }} 和昵称 {{ site.author.nickname }}。</p>
     <div class="hero-actions">
-      <a class="button primary" href="{{ '/publications/' | relative_url }}">View Publications</a>
-      <a class="button secondary" href="{{ '/blog/' | relative_url }}">Read Blog</a>
+      <a class="button primary" href="{{ '/publications/' | relative_url }}" data-i18n-zh="查看论文" data-i18n-en="View Publications">查看论文</a>
+      <a class="button secondary" href="{{ '/blog/' | relative_url }}" data-i18n-zh="阅读博客" data-i18n-en="Read Blog">阅读博客</a>
     </div>
   </div>
   <aside class="profile-panel" aria-label="Profile summary">
     <div class="avatar">RX</div>
     <dl>
       <div>
-        <dt>Email</dt>
+        <dt data-i18n-zh="英文名" data-i18n-en="English Name">英文名</dt>
+        <dd>{{ site.author.english_name }} / {{ site.author.alternate_name }}</dd>
+      </div>
+      <div>
+        <dt data-i18n-zh="昵称" data-i18n-en="Nickname">昵称</dt>
+        <dd>{{ site.author.nickname }}</dd>
+      </div>
+      <div>
+        <dt data-i18n-zh="邮箱" data-i18n-en="Email">邮箱</dt>
         <dd><a href="mailto:{{ site.author.email }}">{{ site.author.email }}</a></dd>
       </div>
       <div>
@@ -26,8 +34,8 @@ description: Personal homepage of Rover X.
         <dd><a href="https://github.com/{{ site.author.github }}">@{{ site.author.github }}</a></dd>
       </div>
       <div>
-        <dt>Location</dt>
-        <dd>Update in <code>_config.yml</code></dd>
+        <dt data-i18n-zh="地点" data-i18n-en="Location">地点</dt>
+        <dd data-i18n-zh="中国，北京" data-i18n-en="Beijing, China">中国，北京</dd>
       </div>
     </dl>
   </aside>
@@ -35,21 +43,21 @@ description: Personal homepage of Rover X.
 
 <section class="section-grid">
   <div>
-    <p class="eyebrow">About</p>
-    <h2>简介</h2>
-    <p>这里可以写你的研究方向、当前职位、教育经历和长期兴趣。建议保持 2-4 句话，首页读起来会很清爽。</p>
+    <p class="eyebrow" data-i18n-zh="关于" data-i18n-en="About">关于</p>
+    <h2 data-i18n-zh="简介" data-i18n-en="About Me">简介</h2>
+    <p data-i18n-zh="我是晁姜晗，英文名 Jianghan Chao，也使用 Brian Chao 和昵称 RoverX。我目前是中国人民大学高瓴人工智能学院和北京中关村学院的 2025 级联培博士生，关注人工智能研究、工程实践，以及持续学习中的问题与方法。" data-i18n-en="I am Jianghan Chao, also known as Brian Chao and RoverX. I am a 2025 joint PhD student at Gaoling School of Artificial Intelligence, Renmin University of China, and Beijing Zhongguancun Academy. My interests span AI research, engineering practice, and the methods behind continuous learning.">我是晁姜晗，英文名 Jianghan Chao，也使用 Brian Chao 和昵称 RoverX。我目前是中国人民大学高瓴人工智能学院和北京中关村学院的 2025 级联培博士生，关注人工智能研究、工程实践，以及持续学习中的问题与方法。</p>
   </div>
   <div>
-    <p class="eyebrow">Now</p>
-    <h2>近期关注</h2>
-    <p>用这里放正在做的项目、开放合作方向、近期论文或你希望别人第一眼看到的信息。</p>
+    <p class="eyebrow" data-i18n-zh="近期" data-i18n-en="Now">近期</p>
+    <h2 data-i18n-zh="近期关注" data-i18n-en="Current Focus">近期关注</h2>
+    <p data-i18n-zh="这里会持续更新正在做的项目、开放合作方向、近期论文，以及我希望访问者第一眼看到的信息。" data-i18n-en="This section will keep track of ongoing projects, collaboration interests, recent papers, and the information I want visitors to notice first.">这里会持续更新正在做的项目、开放合作方向、近期论文，以及我希望访问者第一眼看到的信息。</p>
   </div>
 </section>
 
 <section class="content-section">
   <div class="section-heading">
-    <p class="eyebrow">Selected Work</p>
-    <h2>精选 Publications</h2>
+    <p class="eyebrow" data-i18n-zh="精选成果" data-i18n-en="Selected Work">精选成果</p>
+    <h2 data-i18n-zh="精选论文" data-i18n-en="Selected Publications">精选论文</h2>
   </div>
   <div class="publication-list compact">
     {% assign selected_publications = site.data.publications | where: "selected", true %}
@@ -65,8 +73,8 @@ description: Personal homepage of Rover X.
 
 <section class="content-section">
   <div class="section-heading">
-    <p class="eyebrow">Writing</p>
-    <h2>最新 Blog</h2>
+    <p class="eyebrow" data-i18n-zh="写作" data-i18n-en="Writing">写作</p>
+    <h2 data-i18n-zh="最新博客" data-i18n-en="Latest Blog">最新博客</h2>
   </div>
   <div class="post-list">
     {% for post in site.posts limit: 3 %}

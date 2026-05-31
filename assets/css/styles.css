@@ -83,6 +83,7 @@ main {
 
 .nav {
   display: flex;
+  align-items: center;
   gap: 18px;
   flex-wrap: wrap;
   font-size: 0.96rem;
@@ -97,6 +98,32 @@ main {
 .nav a[aria-current="page"],
 .nav a:hover {
   color: var(--text);
+}
+
+.lang-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 34px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  font: inherit;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.lang-toggle:hover {
+  border-color: var(--accent);
+  color: var(--accent-strong);
+}
+
+.lang-toggle:focus-visible {
+  outline: 3px solid rgba(13, 111, 90, 0.22);
+  outline-offset: 2px;
 }
 
 .hero {

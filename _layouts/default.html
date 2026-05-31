@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="{{ site.lang | default: 'en' }}">
+<html lang="{{ site.lang | default: 'zh-CN' }}">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,18 +9,22 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ '/assets/css/styles.css' | relative_url }}">
+    <script src="{{ '/assets/js/language-toggle.js' | relative_url }}" defer></script>
     {% feed_meta %}
   </head>
   <body>
     <header class="site-header">
       <a class="brand" href="{{ '/' | relative_url }}" aria-label="{{ site.title }} home">
         <span class="brand-mark">RX</span>
-        <span>{{ site.title }}</span>
+        <span data-i18n-zh="晁姜晗" data-i18n-en="{{ site.author.english_name }}">{{ site.author.name }}</span>
       </a>
       <nav class="nav" aria-label="Primary navigation">
-        <a href="{{ '/' | relative_url }}" {% if page.url == '/' %}aria-current="page"{% endif %}>Home</a>
-        <a href="{{ '/publications/' | relative_url }}" {% if page.url contains '/publications/' %}aria-current="page"{% endif %}>Publications</a>
-        <a href="{{ '/blog/' | relative_url }}" {% if page.url contains '/blog/' %}aria-current="page"{% endif %}>Blog</a>
+        <a href="{{ '/' | relative_url }}" {% if page.url == '/' %}aria-current="page"{% endif %} data-i18n-zh="首页" data-i18n-en="Home">首页</a>
+        <a href="{{ '/publications/' | relative_url }}" {% if page.url contains '/publications/' %}aria-current="page"{% endif %} data-i18n-zh="论文" data-i18n-en="Publications">论文</a>
+        <a href="{{ '/blog/' | relative_url }}" {% if page.url contains '/blog/' %}aria-current="page"{% endif %} data-i18n-zh="博客" data-i18n-en="Blog">博客</a>
+        <button class="lang-toggle" type="button" data-language-toggle aria-label="Switch language" aria-pressed="false">
+          <span data-i18n-zh="EN" data-i18n-en="中">EN</span>
+        </button>
       </nav>
     </header>
 
@@ -30,7 +34,7 @@
 
     <footer class="site-footer">
       <span>© {{ 'now' | date: '%Y' }} {{ site.author.name }}</span>
-      <span>Built with GitHub Pages.</span>
+      <span data-i18n-zh="使用 GitHub Pages 构建。" data-i18n-en="Built with GitHub Pages.">使用 GitHub Pages 构建。</span>
     </footer>
   </body>
 </html>

@@ -5,9 +5,9 @@ permalink: /publications/
 ---
 
 <section class="page-title">
-  <p class="eyebrow">Research</p>
-  <h1>Publications</h1>
-  <p>Maintain this list in <code>_data/publications.yml</code>.</p>
+  <p class="eyebrow" data-i18n-zh="研究" data-i18n-en="Research">研究</p>
+  <h1 data-i18n-zh="论文" data-i18n-en="Publications">论文</h1>
+  <p data-i18n-zh="这里整理我的论文、项目链接和相关研究产出。" data-i18n-en="A curated list of my publications, project links, and related research outputs.">这里整理我的论文、项目链接和相关研究产出。</p>
 </section>
 
 <section class="publication-list">
