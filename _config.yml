@@ -1,0 +1,38 @@
+title: Rover X
+description: Personal website, publications, and blog.
+url: "https://roverx12345.github.io"
+baseurl: ""
+lang: zh-CN
+timezone: Asia/Shanghai
+
+author:
+  name: Rover X
+  title: Researcher / Developer
+  affiliation: Your Affiliation
+  email: your.email@example.com
+  github: roverx12345
+  google_scholar:
+  linkedin:
+
+collections:
+  posts:
+    output: true
+
+permalink: /blog/:year/:month/:day/:title/
+
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: post
+
+markdown: kramdown
+kramdown:
+  input: GFM
+
+plugins:
+  - jekyll-feed
+
+exclude:
+  - README.md

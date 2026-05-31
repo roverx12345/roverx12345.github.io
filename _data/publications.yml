@@ -1,0 +1,9 @@
+- title: "Example Paper Title"
+  authors: "Rover X, Collaborator A, Collaborator B"
+  venue: "Conference or Journal Name"
+  year: 2026
+  links:
+    paper: "https://example.com/paper"
+    code: "https://github.com/roverx12345/example"
+  selected: true
+  summary: "One sentence summary of the contribution. Replace this entry with your real publication."
